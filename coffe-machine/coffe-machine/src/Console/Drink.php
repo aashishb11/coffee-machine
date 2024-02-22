@@ -11,6 +11,8 @@ namespace Pdpaola\CoffeeMachine\Console;
  class Drink{
     private string $type;
     private float $price;
+
+    private static array $types = ['tea' => 0.4, 'coffee' => 0.5, 'chocolate' => 0.6 ];
     
     /**
      * Constructor of the class Drink
@@ -32,4 +34,14 @@ namespace Pdpaola\CoffeeMachine\Console;
     public function getPrice(){
         return $this->price;
     }
+
+    /**
+     * Checks if the requested drink type is available or not 
+     * @param string $type The type of the drink to check.
+     * @return bool Returns true if the drink type is available, false otherwise.
+     */
+
+     public static function isAvailableDrinkType(string $type): bool{
+        return isset(self::$types[strtolower($type)]);
+     }
  }
