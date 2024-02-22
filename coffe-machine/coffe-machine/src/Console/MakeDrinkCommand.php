@@ -30,8 +30,46 @@ class MakeDrinkCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
 
-        
+        $drinkType = $input->getArgument('drink-type');
+        $money = (float) $input->getArgument('money');
+        $sugars = (int) $input->getArgument('sugars');
+        $extraHot = $input->getOption('extra-hot');
 
+        //validate drink type 
+        if (!OrderValidator::validateDrinkType($drinkType)) {
+            $output->writeln('The drink type should be tea, coffee or chocolate.');
+            return Command::FAILURE;
+        }
+
+        //validate money 
+
+        if (!OrderValidator::validateMoney($money, $drinkType)) {
+            $output->writeln("The $drinkType costs {$drinkType->getPrice()}.");
+            return Command::FAILURE;
+        }
+
+        //validate sugars 
+        if (!OrderValidator::validateSugars($sugars)) {
+            $output->writeln('The number of sugars should be between 0 and 2.');
+            return Command::FAILURE;
+        }
+
+        //place a new order 
+
+        $order = new Order($drinkType, $sugars, $extraHot);
+
+        //make the drink 
+
+        $drinkMaker = new DrinkMaker();
+        $drinkMaker->makeDrink($order, $output);
+
+        //save the order to DB 
+
+        $pdo = MysqlPdoClient::getPdo();
+        $orderRepository = new OrderSave($pdo);
+        $orderRepository->save($order);
+
+        return Command::SUCCESS;
         /*
          $drinkType = strtolower($input->getArgument('drink-type'));
         if (!in_array($drinkType, ['tea', 'coffee', 'chocolate'])) {
