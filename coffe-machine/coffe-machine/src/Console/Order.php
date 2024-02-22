@@ -43,11 +43,11 @@
         return $this->sugars;
     }
 
-    public function getExtraHot(): bool{
+    public function isExtraHot(): bool{
         return $this->extraHot;
     }
 
-    public function getStick(): int{
+    public function hasStick(): int{
         return $this->stick;
     }
 

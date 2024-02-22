@@ -20,5 +20,15 @@ use Pdpaola\CoffeeMachine\Console\Order;
     public function save(Order $order) : void 
     {
         //Insertion and execution 
+
+        $stmt = $this->pdo->prepare(
+            'INSERT INTO orders (drink_type, sugars, stick, extra_hot) VALUES (:drink_type, :sugars, :stick, :extra_hot)'
+        );
+        $stmt->execute([
+            'drink_type' => $order->getDrink()->getType(),
+            'sugars' => $order->getSugars(),
+            'stick' => $order->hasStick() ? 1 : 0,
+            'extra_hot' => $order->isExtraHot() ? 1 : 0,
+        ]);
     }
  }
