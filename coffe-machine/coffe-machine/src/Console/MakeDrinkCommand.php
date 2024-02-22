@@ -2,6 +2,12 @@
 
 namespace Pdpaola\CoffeeMachine\Console;
 
+use Pdpaola\CoffeeMachine\Console\DrinkMaker;
+use Pdpaola\CoffeeMachine\Console\OrderValidator;
+use Pdpaola\CoffeeMachine\Console\Drink;
+use Pdpaola\CoffeeMachine\Console\Order;
+use Pdpaola\CoffeeMachine\Console\OrderSave;
+use Pdpaola\CoffeeMachine\Console\MysqlPdoClient;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -14,44 +20,25 @@ class MakeDrinkCommand extends Command
 
     protected function configure()
     {
-        $this->addArgument(
-            'drink-type',
-            InputArgument::REQUIRED,
-            'The type of the drink. (Tea, Coffee or Chocolate)'
-        );
-
-        $this->addArgument(
-            'money',
-            InputArgument::REQUIRED,
-            'The amount of money given by the user'
-        );
-
-        $this->addArgument(
-            'sugars',
-            InputArgument::OPTIONAL,
-            'The number of sugars you want. (0, 1, 2)',
-            0
-        );
-
-        $this->addOption(
-            'extra-hot',
-            'e',
-            InputOption::VALUE_NONE,
-            $description = 'If the user wants to make the drink extra hot'
-        );
+        $this
+            ->addArgument('drink-type', InputArgument::REQUIRED,'The type of the drink. (Tea, Coffee, or Chocolate)')
+            ->addArgument('money', InputArgument::REQUIRED,'The amount of money given by the user')
+            ->addArgument('sugars', InputArgument::OPTIONAL,'The number of sugars you want. (0, 1, 2)', 0)
+            ->addOption('extra-hot', 'e', InputOption::VALUE_NONE,'If the user wants to make the drink extra hot');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $drinkType = strtolower($input->getArgument('drink-type'));
+
+        
+
+        /*
+         $drinkType = strtolower($input->getArgument('drink-type'));
         if (!in_array($drinkType, ['tea', 'coffee', 'chocolate'])) {
             $output->writeln('The drink type should be tea, coffee or chocolate.');
         } else {
-            /**
-             * Tea       --> 0.4
-             * Coffee    --> 0.5
-             * Chocolate --> 0.6
-             */
+        
+            
             $money = $input->getArgument('money');
             switch ($drinkType) {
                 case 'tea':
@@ -70,6 +57,7 @@ class MakeDrinkCommand extends Command
                     if ($money < 0.6) {
                         $output->writeln('The chocolate costs 0.6.');
                         return;
+                         
                     }
                     break;
             }
@@ -101,6 +89,6 @@ class MakeDrinkCommand extends Command
                 'stick' => $stick ?: 0,
                 'extra_hot' => $extraHot ?: 0,
             ]);
-        }
+        } */
     }
 }
